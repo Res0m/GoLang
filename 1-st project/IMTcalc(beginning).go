@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
 	"math"
+	"os"
 )
 
 
@@ -69,12 +72,26 @@ func main() {
 
 
 	var x float64
+	reader := bufio.NewReader(os.Stdin)
+
 	for {
 		menu()
-		fmt.Scan(&x)
+		_, err := fmt.Scan(&x)
+		if err != nil{
+			fmt.Println("Ошибка ввода. Пожалуйста введите число (1 или 2)")
+			reader.ReadString('\n') // очищаем буфер
+			continue
+		}
+
+
 		if x == 1{
 			userKg, userHeight := getUserInput()
-			IMT := calculateIMT(userKg, userHeight)
+			IMT, error := calculateIMT(userKg, userHeight)
+			if error != nil{
+				// fmt.Println(error)
+				// continue
+				panic("Произошла ошибка")
+			}
 			outputResult((IMT))
 			switch{
 			case IMT < 16:
@@ -90,12 +107,9 @@ func main() {
 			}
 		} else if x == 2{
 			return
-		} else {
-			fmt.Println("Неверный ввод, попробуйте еще раз")
-		}
 	}
-
 	}
+}
 	// -----------------------------------------------------------
 	// if, else if, else : 
 	// if IMT < 16 {
@@ -162,9 +176,12 @@ func outputResult(imt float64){
 	fmt.Println(result)
 }
 
-func calculateIMT(kg, height float64) float64{
+func calculateIMT(kg, height float64) (float64, error){
+	if kg <= 0 || height <= 0{
+		return 0, errors.New("Вес или рост не могут быть меньше или равны 0")
+	}
 	IMT := kg / math.Pow(height/100, IMTPower) 
-	return IMT
+	return IMT, nil
 }
 
 
