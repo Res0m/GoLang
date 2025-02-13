@@ -9,10 +9,25 @@ import (
 // Вывести сумму всех транзакций
 
 func main(){
+	// tr := make([]string, 0, 2) // make -> создает слайс, 0 - size ( длина ), 2 - capacity (вместимость (количество элементов, которое можно добавить в слайс без пересоздания))
+	// fmt.Println(len(tr), cap(tr))
+	// tr = append(tr, "1")
+	// fmt.Println(len(tr), cap(tr))
+	// tr = append(tr, "2")
+	// fmt.Println(len(tr), cap(tr))
+	// tr = append(tr, "3")
+	// fmt.Println(len(tr), cap(tr))
+	// fmt.Println(tr)
+
+
+
+
+
+
 	// tr1 := []int{1, 2, 3}
 	// tr2 := []int{4, 5, 6}
 	// tr1 = append(tr1, tr2...) //  в метод append() можно передавать любое количество значений
-	// fmt.Println(tr1)		  // ... -> unpack, т.е распаковывает слай и берет из него значения
+	// fmt.Println(tr1)		  // ... -> unpack, т.е распаковывает слайc и берет из него значения
 
 
 
