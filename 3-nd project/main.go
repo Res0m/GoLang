@@ -76,7 +76,19 @@ func addNote(test map[string]string) {
 }
 
 func deleteNote(test map[string]string){
-
+	var deletNote string
+	var err error
+	for{
+	fmt.Println("Введите какую заметку надо удалить: ")
+	_, err = fmt.Scan(&deleteNote)
+	if err == nil{
+		break
+	}else{
+		fmt.Println("Ошибка, ты не прав")
+	}
+	delete(test, deletNote )
+	fmt.Println("Заметка была удалена")
+	}
 }
 
 func menuNotes(){
