@@ -32,14 +32,29 @@ func main(){
 	При 3 - Ввод названия и удаление по нему
 	При 4 - Завершение 
 	*/
+	dict := map[string]string{}
+	var number int
+	var err error
+	for {
+		menuNotes()
+		_, err := fmt.Scan(&number)
+		if err != nil{
+			if number == 1{
+				watchNotes(dict)
+			}
+			if number == 2{
+				addNote(dict)
+			}
+			if number == 3{
+				deleteNote(dict)
+			}
+			if number == 4{
+				return
+			}
+		}else{
+			fmt.Println("Ошибка, введите число")
+		}
 
-
-	m := map[string]int {
-		"apple": 5,
-		"banana": 6,
-	}
-	for key, value := range m {
-		fmt.Println(key, value)
 	}
 }
 
@@ -52,7 +67,6 @@ func watchNotes(test map[string]string){
 func addNote(test map[string]string) {
     var name, address string
     var err error
-
     for {
         fmt.Println("Введите название:")
         _, err = fmt.Scan(&name)
@@ -61,7 +75,6 @@ func addNote(test map[string]string) {
         }
         fmt.Println("Ошибка ввода названия, попробуйте снова:", err)
     }
-
     for {
         fmt.Println("Введите адрес:")
         _, err = fmt.Scan(&address)
@@ -70,13 +83,12 @@ func addNote(test map[string]string) {
         }
         fmt.Println("Ошибка ввода адреса, попробуйте снова:", err)
     }
-
     test[name] = address
     fmt.Println("Закладка добавлена:", name, address)
 }
 
 func deleteNote(test map[string]string){
-	var deletNote string
+	var deleteNote string
 	var err error
 	for{
 	fmt.Println("Введите какую заметку надо удалить: ")
@@ -86,7 +98,7 @@ func deleteNote(test map[string]string){
 	}else{
 		fmt.Println("Ошибка, ты не прав")
 	}
-	delete(test, deletNote )
+	delete(test, deleteNote )
 	fmt.Println("Заметка была удалена")
 	}
 }
