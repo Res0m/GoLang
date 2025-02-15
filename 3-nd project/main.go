@@ -33,28 +33,27 @@ func main(){
 	При 4 - Завершение 
 	*/
 	dict := map[string]string{}
-	var number int
-	var err error
 	for {
 		menuNotes()
+		var number float64
 		_, err := fmt.Scan(&number)
 		if err != nil{
-			if number == 1{
-				watchNotes(dict)
-			}
-			if number == 2{
-				addNote(dict)
-			}
-			if number == 3{
-				deleteNote(dict)
-			}
-			if number == 4{
-				return
-			}
-		}else{
 			fmt.Println("Ошибка, введите число")
+			fmt.Scanln()
+			continue
 		}
-
+		switch number {
+        case 1:
+            watchNotes(dict)
+        case 2:
+            addNote(dict)
+        case 3:
+            deleteNote(dict)
+        case 4:
+            return
+        default:
+            fmt.Println("Неверный выбор, попробуйте снова")
+        }
 	}
 }
 
@@ -108,5 +107,5 @@ func menuNotes(){
 	fmt.Println("2. Добавить закладку")
 	fmt.Println("3. Удалить закладку")
 	fmt.Println("4. Завершение")
-	fmt.Println("Введите номер действия: ")
+	fmt.Print("Введите номер действия: ")
 }
