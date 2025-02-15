@@ -2,10 +2,34 @@ package main
 
 import "fmt"
 
+
+
+type bookmarkMap = map[string]string // ALIAS, тип данных, который является map[string]string
+func add(array []string ){
+	array[0] = "2"
+}
+
 func main(){
+	a := []string{"1"}
+	add(a)
+	fmt.Println(a)
+	
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // key - значение
 // NY - New York
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+	//  m := make(bookmarkMap, 3) // make(map[string]string, 3) - создание map с 3 элементами
+	//  m["A"] = "1"
+	//  m["B"] = "2"
+	//  m["C"] = "3"
+	//  m["D"] = "4"
+	//  fmt.Println(len(m))
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	// MAP - это структура данных, которая хранит пары ключ-значение:
     // m := map[string]string { // map [key, например float64]valueб например string{key:value}
 	// 	"PurpleSchool": "https://purpleschool.ru", // key + value , key:value
 	// } 
@@ -17,11 +41,12 @@ func main(){
 	// m["Yandex"] = "yandex.ru"
 	// fmt.Println(m)
 	// delete(m, "Yandex") // delete(map, key), удаляет из map ключ и значение
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 
 
-
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	/* Создать приложение, которое сначала выдаёт меню:
 	- 1. Посмотреть закладки
 	- 2. Добавить закладку
@@ -32,10 +57,12 @@ func main(){
 	При 3 - Ввод названия и удаление по нему
 	При 4 - Завершение 
 	*/
-	dict := map[string]string{}
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	dict := bookmarkMap{}
 	for {
 		menuNotes()
-		var number float64
+		var number int
 		_, err := fmt.Scan(&number)
 		if err != nil{
 			fmt.Println("Ошибка, введите число")
@@ -57,49 +84,52 @@ func main(){
 	}
 }
 
-func watchNotes(test map[string]string){	
+func watchNotes(test bookmarkMap){	
 	for key, value := range test{
 		fmt.Println(key, value)
 	}
 }
 
-func addNote(test map[string]string) {
+func addNote(test bookmarkMap) {
     var name, address string
     var err error
     for {
-        fmt.Println("Введите название:")
+        fmt.Print("Введите название: ")
         _, err = fmt.Scan(&name)
         if err == nil {
             break
         }
-        fmt.Println("Ошибка ввода названия, попробуйте снова:", err)
+        fmt.Println("Ошибка ввода названия, попробуйте снова", err)
     }
     for {
-        fmt.Println("Введите адрес:")
+        fmt.Print("Введите адрес:")
         _, err = fmt.Scan(&address)
         if err == nil {
             break
         }
-        fmt.Println("Ошибка ввода адреса, попробуйте снова:", err)
+        fmt.Println("Ошибка ввода адреса, попробуйте снова", err)
     }
     test[name] = address
-    fmt.Println("Закладка добавлена:", name, address)
+    fmt.Println("Закладка добавлена", name, address)
 }
 
-func deleteNote(test map[string]string){
+func deleteNote(test bookmarkMap){
 	var deleteNote string
 	var err error
+	if len(test) == 0 {
+		fmt.Println("Нет закладок для удаления.")
+		return
+	}
+	fmt.Print("Введите какую заметку надо удалить: ")
 	for{
-	fmt.Println("Введите какую заметку надо удалить: ")
 	_, err = fmt.Scan(&deleteNote)
 	if err == nil{
 		break
-	}else{
-		fmt.Println("Ошибка, ты не прав")
+	}
+	fmt.Println("Ошибка, ты не прав")
 	}
 	delete(test, deleteNote )
-	fmt.Println("Заметка была удалена")
-	}
+	fmt.Println("Закладка была удалена")
 }
 
 func menuNotes(){
