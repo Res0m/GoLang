@@ -1,9 +1,5 @@
 package main
 
-
-
-
-
 import (
 	"fmt"
 	"math/rand/v2"
@@ -20,34 +16,36 @@ type account struct {
 	url string
 }
 
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-*!@#$%^&*()_+")
+
+
 func main() {
-	fmt.Println(rand.IntN(10))
-	str :=[]int32("Привет!)")
-	for _, ch := range string(str){
-		fmt.Println(ch, string(ch))
-	}
-
-
-
-
-
-
-	login := promptData("Введите логин")
-	password := promptData("Введите пароль")
-	url := promptData("Введите URL")
-
-	myAccount := account{
-		login: login,
-		password: password,
-		url: url,
-	}
+	// str :=[]int32("Привет!)")
+	// for _, ch := range string(str){
+	// 	fmt.Println(ch, string(ch))
 	// }
-	// account2 := account{
+
+	password := generatePassword(8)
+	fmt.Println(password)
+
+
+	// login := promptData("Введите логин")
+	// password := promptData("Введите пароль")
+	// url := promptData("Введите URL")
+
+	// myAccount := account{
 	// 	login: login,
 	// 	password: password,
+	// 	url: url,
 	// }
-	// account3 := account{}
-	outputPassword(&myAccount)
+	// // }
+	// // account2 := account{
+	// // 	login: login,
+	// // 	password: password,
+	// // }
+	// // account3 := account{}
+	// outputPassword(&myAccount)
 }
 
 
@@ -63,7 +61,11 @@ func outputPassword(acc *account){
 	fmt.Println(acc.login, acc.password, acc.url)
 }
 
-
+// Генерация пароля
 func generatePassword(n int) string{
-	
+	res := make([]rune, n)
+	for i := range res{
+		res[i] = letterRunes[rand.IntN(len(letterRunes))]
+	}
+	return string(res)
 }
