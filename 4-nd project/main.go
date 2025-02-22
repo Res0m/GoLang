@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"Golang/password/account"
 )
 
-var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-*!@#$%^&*()_+")
 
 func main() {
 
@@ -22,12 +22,14 @@ func main() {
 	password := promptData("Введите пароль")
 	url := promptData("Введите URL")
 
-	myAccount, err := newAccountWithTimeStamp(login, password, url)
+	myAccount, err := account.NewAccountWithTimeStamp(login, password, url)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	myAccount.OutputPassword()
 
+	
 	// -----------------------------------------------------------------------------------------
 	// //
 	// // account2 := account{
@@ -39,7 +41,7 @@ func main() {
 	// myAccount.generatePassword(8)
 	// -----------------------------------------------------------------------------------------
 
-	myAccount.outputPassword()
+	
 
 }
 

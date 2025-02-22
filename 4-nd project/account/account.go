@@ -1,4 +1,4 @@
-package main
+package account
 
 import (
 	"errors"
@@ -8,16 +8,20 @@ import (
 	"time"
 )
 
-type account struct {
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-*!@#$%^&*()_+")
+
+
+type Account struct {
 	login    string
 	password string
 	url      string
 }
 
-type accountWithTimeStamp struct {
+type AccountWithTimeStamp struct {
 	createdAt time.Time
 	updatedAt time.Time
-	account
+	Account
 }
 
 // 1. Если логина нет, то ошибка
@@ -41,19 +45,20 @@ type accountWithTimeStamp struct {
 // 	return newAcc, nil
 
 // }
-
-func newAccountWithTimeStamp(log, passw, urlString string) (*accountWithTimeStamp, error) {
+// Если с маленькой буквы, то метод приватный
+// Если с большой буквы, то публичный
+func NewAccountWithTimeStamp(log, passw, urlString string) (*AccountWithTimeStamp, error) {
 	_, err := url.ParseRequestURI(urlString)
 	if err != nil {
 		return nil, errors.New("URL is not valid")
 	}
 	if log == "" {
-		return nil, errors.New("Login is empty")
+		return nil, errors.New("login is empty")
 	}
-	newAcc := &accountWithTimeStamp{
+	newAcc := &AccountWithTimeStamp{
 		createdAt: time.Now(),
 		updatedAt: time.Now(),
-		account: account{
+		Account: Account{
 			login:    log,
 			password: passw,
 			url:      urlString,
@@ -67,12 +72,12 @@ func newAccountWithTimeStamp(log, passw, urlString string) (*accountWithTimeStam
 }
 
 // Вывод данных
-func /* метод для структуры account */ (acc *accountWithTimeStamp) outputPassword() {
-	fmt.Println(acc.login, acc.password, acc.url, acc.createdAt, acc.updatedAt)
+func /* метод для структуры account */ (acc *AccountWithTimeStamp) OutputPassword() {
+	fmt.Println(acc.login, acc.password, acc.url)
 }
 
 // Генерация пароля
-func (acc *account) generatePassword(n int) {
+func (acc *Account) generatePassword(n int) {
 	res := make([]rune, n)
 	for i := range res {
 		res[i] = letterRunes[rand.IntN(len(letterRunes))]
