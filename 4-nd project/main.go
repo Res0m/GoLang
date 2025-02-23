@@ -8,7 +8,8 @@ import (
 
 
 func main() {
-
+	defer fmt.Println(1) // defer - отложенный вызов функции
+	defer fmt.Println(2) // Сначала выполнится 2, потом 1
 	// -----------------------------------------------------------------------------------------
 	// str :=[]int32(rune)("Привет!)")
 	// for _, ch := range string(str){
@@ -18,7 +19,7 @@ func main() {
 	// password := generatePassword(8)
 	// fmt.Println(password)
 	// -----------------------------------------------------------------------------------------
-
+	files.WriteFile("Привет! Я файл", "file.txt")
 	login := promptData("Введите логин")
 	password := promptData("Введите пароль")
 	url := promptData("Введите URL")
