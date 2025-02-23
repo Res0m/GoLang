@@ -8,30 +8,17 @@ import (
 
 
 func main() {
-	defer fmt.Println(1) // defer - отложенный вызов функции
-	defer fmt.Println(2) // Сначала выполнится 2, потом 1
+	createAccount()
+
 	// -----------------------------------------------------------------------------------------
 	// str :=[]int32(rune)("Привет!)")
 	// for _, ch := range string(str){
 	// 	fmt.Println(ch, string(ch))
 	// }
-
-	// password := generatePassword(8)
-	// fmt.Println(password)
 	// -----------------------------------------------------------------------------------------
-	files.WriteFile("Привет! Я файл", "file.txt")
-	login := promptData("Введите логин")
-	password := promptData("Введите пароль")
-	url := promptData("Введите URL")
+	
 
-	myAccount, err := account.NewAccountWithTimeStamp(login, password, url)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	myAccount.OutputPassword()
-
-	files.ReadFile()
+	
 	// -----------------------------------------------------------------------------------------
 	// //
 	// // account2 := account{
@@ -43,9 +30,26 @@ func main() {
 	// myAccount.generatePassword(8)
 	// -----------------------------------------------------------------------------------------
 
-	
-
 }
+
+
+func createAccount(){
+	login := promptData("Введите логин")
+	password := promptData("Введите пароль")
+	url := promptData("Введите URL")
+	myAccount, err := account.NewAccount(login, password, url)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	file, err := myAccount.ToBytes()
+	if err != nil {	
+		fmt.Println(err)
+		return
+	}
+	files.WriteFile(file, "data.json")
+}
+
 
 func promptData(prompt string) string {
 	fmt.Print(prompt, ": ")

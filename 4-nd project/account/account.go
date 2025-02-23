@@ -1,11 +1,13 @@
 package account
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math/rand/v2"
 	"net/url"
 	"time"
+
 	"github.com/fatih/color"
 )
 
@@ -14,16 +16,14 @@ var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ12
 
 
 type Account struct {
-	login    string
-	password string
-	url      string
+	Login    string `json:"login"` // `` - теги
+	Password string `json:"password"`
+	Url      string `json:"url"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type AccountWithTimeStamp struct {
-	createdAt time.Time
-	updatedAt time.Time
-	Account
-}
+
 
 // 1. Если логина нет, то ошибка
 // 2. Если пароля нет, то генерируем
@@ -48,7 +48,7 @@ type AccountWithTimeStamp struct {
 // }
 // Если с маленькой буквы, то метод приватный
 // Если с большой буквы, то публичный
-func NewAccountWithTimeStamp(log, passw, urlString string) (*AccountWithTimeStamp, error) {
+func NewAccount(log, passw, urlString string) (*Account, error) {
 	_, err := url.ParseRequestURI(urlString)
 	if err != nil {
 		return nil, errors.New("URL is not valid")
@@ -56,14 +56,12 @@ func NewAccountWithTimeStamp(log, passw, urlString string) (*AccountWithTimeStam
 	if log == "" {
 		return nil, errors.New("login is empty")
 	}
-	newAcc := &AccountWithTimeStamp{
-		createdAt: time.Now(),
-		updatedAt: time.Now(),
-		Account: Account{
-			login:    log,
-			password: passw,
-			url:      urlString,
-		},
+	newAcc := &Account{
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+		Login:    log,
+		Password: passw,
+		Url:      urlString,
 	}
 	if passw == "" {
 		newAcc.generatePassword(12)
@@ -74,9 +72,9 @@ func NewAccountWithTimeStamp(log, passw, urlString string) (*AccountWithTimeStam
 
 // Вывод данных
 /* метод для структуры account */
-func  (acc *AccountWithTimeStamp) OutputPassword() {
-	color.Cyan(acc.login, acc.password, acc.url)
-	fmt.Println(acc.login, acc.password, acc.url)
+func  (acc *Account) OutputPassword() {
+	color.Cyan(acc.Login, acc.Password, acc.Url)
+	fmt.Println(acc.Login, acc.Password, acc.Url)
 }
 
 // Генерация пароля
@@ -85,5 +83,14 @@ func (acc *Account) generatePassword(n int) {
 	for i := range res {
 		res[i] = letterRunes[rand.IntN(len(letterRunes))]
 	}
-	acc.password = string(res)
+	acc.Password = string(res)
+}
+
+
+func (acc *Account) ToBytes() ([]byte, error){
+	file, err := json.Marshal(acc)
+	if err != nil{
+		return nil, err
+	}
+	return file, nil
 }
