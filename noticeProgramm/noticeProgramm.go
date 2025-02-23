@@ -30,7 +30,7 @@ func main(){
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// MAP - это структура данных, которая хранит пары ключ-значение:
-    // m := map[string]string { // map [key, например float64]valueб например string{key:value}
+    // m := map[string]string { // map [key, например float64]value, например string{key:value}
 	// 	"PurpleSchool": "https://purpleschool.ru", // key + value , key:value
 	// } 
 	// fmt.Println(m)
