@@ -6,6 +6,7 @@ import (
 	"math/rand/v2"
 	"net/url"
 	"time"
+	"github.com/fatih/color"
 )
 
 
@@ -72,7 +73,9 @@ func NewAccountWithTimeStamp(log, passw, urlString string) (*AccountWithTimeStam
 }
 
 // Вывод данных
-func /* метод для структуры account */ (acc *AccountWithTimeStamp) OutputPassword() {
+/* метод для структуры account */
+func  (acc *AccountWithTimeStamp) OutputPassword() {
+	color.Cyan(acc.login, acc.password, acc.url)
 	fmt.Println(acc.login, acc.password, acc.url)
 }
 

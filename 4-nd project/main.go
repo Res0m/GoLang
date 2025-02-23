@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"Golang/password/account"
+	"Golang/password/files"
 )
 
 
@@ -29,7 +30,7 @@ func main() {
 	}
 	myAccount.OutputPassword()
 
-	
+	files.ReadFile()
 	// -----------------------------------------------------------------------------------------
 	// //
 	// // account2 := account{
