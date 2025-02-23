@@ -8,8 +8,33 @@ import (
 
 
 func main() {
-	createAccount()
+	//1. Создать аккаунт
+	//2. Найти аккаунт
+	//3. Удалить аккаунт
+	//4. Выход
 
+
+	fmt.Println("Программа для хранения паролей")
+Menu: // label -> какой-то лейбл (часть кода)
+	for {
+		menuForAccount()
+		var choice int
+		_, err := fmt.Scanln(&choice)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		switch choice{
+		case 1:
+			createAccount()
+		case 2:
+			findAccount()
+		case 3:
+			deleteAccount()
+		default:
+			break Menu
+		}
+	}
 	// -----------------------------------------------------------------------------------------
 	// str :=[]int32(rune)("Привет!)")
 	// for _, ch := range string(str){
@@ -32,7 +57,7 @@ func main() {
 
 }
 
-
+//1 -> Создать аккаунт
 func createAccount(){
 	login := promptData("Введите логин")
 	password := promptData("Введите пароль")
@@ -56,4 +81,20 @@ func promptData(prompt string) string {
 	var res string
 	fmt.Scanln(&res)
 	return res
+}
+
+
+//2 -> Найти аккаунт
+func findAccount(){
+
+}
+//3 -> Удалить аккаунт
+func deleteAccount(){
+
+}
+func menuForAccount(){
+	fmt.Println("1. Создать аккаунт")
+	fmt.Println("2. Найти аккаунт")
+	fmt.Println("3. Удалить аккаунт")
+	fmt.Println("4. Выход")
 }
