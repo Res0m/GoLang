@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"Golang/password/account"
-	"Golang/password/files"
 )
 
 
@@ -67,12 +66,8 @@ func createAccount(){
 		fmt.Println(err)
 		return
 	}
-	file, err := myAccount.ToBytes()
-	if err != nil {	
-		fmt.Println(err)
-		return
-	}
-	files.WriteFile(file, "data.json")
+	vault := account.NewVault()
+	vault.AddAccount(*myAccount)
 }
 
 

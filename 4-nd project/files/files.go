@@ -5,12 +5,12 @@ import (
 	"os"
 )
 
-func ReadFile() {
-	data, err := os.ReadFile("file.txt")
+func ReadFile(name string)([]byte, error) {
+	data, err := os.ReadFile(name)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	fmt.Println(string(data))
+	return data, nil
 
 }
 
