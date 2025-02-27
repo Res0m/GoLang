@@ -15,7 +15,8 @@ type Vault struct {
 }
 
 func NewVault() *Vault {
-	file, err := files.ReadFile("data.json")
+	db := files.NewJsonDb("data.json")
+	file, err := db.Read()
 	if err != nil {
 		return &Vault{
 			Accounts:  []Account{},
@@ -46,13 +47,36 @@ func (vault *Vault) FindAccountsByUrl(url string) []Account {
 }
 
 func (vault *Vault) AddAccount(acc Account) {
+	db := files.NewJsonDb("data.json")
 	vault.Accounts = append(vault.Accounts, acc)
 	vault.UpdatedAt = time.Now()
 	data, err := vault.ToBytes()
 	if err != nil {
 		color.Red("Не удалось преобразовать")
 	}
-	files.WriteFile(data, "data.json")
+	db.Write(data)
+}
+
+func (vault *Vault) DeleteAccountByUrl(url string) bool {
+	var accounts []Account
+	isDeleted := false
+	for _, account := range vault.Accounts {
+		isMatched := strings.Contains(account.Url, url)
+		if !isMatched {
+			accounts = append(accounts, account)
+			continue
+		}
+		isDeleted = true
+	}
+	vault.Accounts = accounts
+	vault.UpdatedAt = time.Now()
+	data, err := vault.ToBytes()
+	if err != nil {
+		color.Red("Не удалось преобразовать")
+	}
+	db := files.NewJsonDb("data.json")
+	db.Write(data)
+	return isDeleted
 }
 
 func (vault *Vault) ToBytes() ([]byte, error) {

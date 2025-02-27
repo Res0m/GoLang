@@ -30,7 +30,7 @@ Menu: // label -> какой-то лейбл (часть кода)
 		case 2:
 			findAccount(vault)
 		case 3:
-			deleteAccount()
+			deleteAccount(vault)
 		default:
 			break Menu
 		}
@@ -88,8 +88,15 @@ func findAccount(vault *account.Vault) {
 }
 
 // 3 -> Удалить аккаунт
-func deleteAccount() {
-
+func deleteAccount(vault *account.Vault) {
+	url := promptData("Введите URL для удаления")
+	isDeleted := vault.DeleteAccountByUrl(url)
+	if isDeleted {
+		color.Green("Аккаунт удален")
+		return
+	} else{
+		color.Red("Не найдено")
+	}
 }
 func menuForAccount() {
 	fmt.Println("1. Создать аккаунт")
