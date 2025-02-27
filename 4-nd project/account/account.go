@@ -2,7 +2,6 @@ package account
 
 import (
 	"errors"
-	"fmt"
 	"math/rand/v2"
 	"net/url"
 	"time"
@@ -10,19 +9,15 @@ import (
 	"github.com/fatih/color"
 )
 
-
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-*!@#$%^&*()_+")
 
-
 type Account struct {
-	Login    string `json:"login"` // `` - теги
-	Password string `json:"password"`
-	Url      string `json:"url"`
+	Login     string    `json:"login"` // `` - теги
+	Password  string    `json:"password"`
+	Url       string    `json:"url"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
-
-
 
 // 1. Если логина нет, то ошибка
 // 2. Если пароля нет, то генерируем
@@ -58,9 +53,9 @@ func NewAccount(log, passw, urlString string) (*Account, error) {
 	newAcc := &Account{
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
-		Login:    log,
-		Password: passw,
-		Url:      urlString,
+		Login:     log,
+		Password:  passw,
+		Url:       urlString,
 	}
 	if passw == "" {
 		newAcc.generatePassword(12)
@@ -71,9 +66,10 @@ func NewAccount(log, passw, urlString string) (*Account, error) {
 
 // Вывод данных
 /* метод для структуры account */
-func  (acc *Account) OutputPassword() {
-	color.Cyan(acc.Login, acc.Password, acc.Url)
-	fmt.Println(acc.Login, acc.Password, acc.Url)
+func (acc *Account) Output() {
+	color.Cyan(acc.Login)
+	color.Cyan(acc.Password)
+	color.Cyan(acc.Url)
 }
 
 // Генерация пароля
@@ -84,5 +80,3 @@ func (acc *Account) generatePassword(n int) {
 	}
 	acc.Password = string(res)
 }
-
-

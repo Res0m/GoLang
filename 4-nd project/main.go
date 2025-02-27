@@ -1,17 +1,18 @@
 package main
 
 import (
-	"fmt"
 	"Golang/password/account"
-)
+	"fmt"
 
+	"github.com/fatih/color"
+)
 
 func main() {
 	//1. Создать аккаунт
 	//2. Найти аккаунт
 	//3. Удалить аккаунт
 	//4. Выход
-
+	vault := account.NewVault()
 
 	fmt.Println("Программа для хранения паролей")
 Menu: // label -> какой-то лейбл (часть кода)
@@ -23,11 +24,11 @@ Menu: // label -> какой-то лейбл (часть кода)
 			fmt.Println(err)
 			return
 		}
-		switch choice{
+		switch choice {
 		case 1:
-			createAccount()
+			createAccount(vault)
 		case 2:
-			findAccount()
+			findAccount(vault)
 		case 3:
 			deleteAccount()
 		default:
@@ -40,9 +41,7 @@ Menu: // label -> какой-то лейбл (часть кода)
 	// 	fmt.Println(ch, string(ch))
 	// }
 	// -----------------------------------------------------------------------------------------
-	
 
-	
 	// -----------------------------------------------------------------------------------------
 	// //
 	// // account2 := account{
@@ -56,8 +55,8 @@ Menu: // label -> какой-то лейбл (часть кода)
 
 }
 
-//1 -> Создать аккаунт
-func createAccount(){
+// 1 -> Создать аккаунт
+func createAccount(vault *account.Vault) {
 	login := promptData("Введите логин")
 	password := promptData("Введите пароль")
 	url := promptData("Введите URL")
@@ -66,10 +65,8 @@ func createAccount(){
 		fmt.Println(err)
 		return
 	}
-	vault := account.NewVault()
 	vault.AddAccount(*myAccount)
 }
-
 
 func promptData(prompt string) string {
 	fmt.Print(prompt, ": ")
@@ -78,18 +75,26 @@ func promptData(prompt string) string {
 	return res
 }
 
+// 2 -> Найти аккаунт
+func findAccount(vault *account.Vault) {
+	url := promptData("Введите URL для поиска")
+	accounts := vault.FindAccountsByUrl(url)
+	if len(accounts) == 0 {
+		color.Red("Аккаунтов не найдено")
+	}
+	for _, account := range accounts {
+		account.Output()
+	}
+}
 
-//2 -> Найти аккаунт
-func findAccount(){
+// 3 -> Удалить аккаунт
+func deleteAccount() {
 
 }
-//3 -> Удалить аккаунт
-func deleteAccount(){
-
-}
-func menuForAccount(){
+func menuForAccount() {
 	fmt.Println("1. Создать аккаунт")
 	fmt.Println("2. Найти аккаунт")
 	fmt.Println("3. Удалить аккаунт")
 	fmt.Println("4. Выход")
+	fmt.Print("Введите номер задачи: ")
 }
