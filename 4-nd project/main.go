@@ -2,6 +2,7 @@ package main
 
 import (
 	"Golang/password/account"
+	"Golang/password/files"
 	"fmt"
 
 	"github.com/fatih/color"
@@ -12,7 +13,7 @@ func main() {
 	//2. Найти аккаунт
 	//3. Удалить аккаунт
 	//4. Выход
-	vault := account.NewVault()
+	vault := account.NewVault(files.NewJsonDb("data.json"))
 
 	fmt.Println("Программа для хранения паролей")
 Menu: // label -> какой-то лейбл (часть кода)
@@ -56,7 +57,7 @@ Menu: // label -> какой-то лейбл (часть кода)
 }
 
 // 1 -> Создать аккаунт
-func createAccount(vault *account.Vault) {
+func createAccount(vault *account.VaultWithDb) {
 	login := promptData("Введите логин")
 	password := promptData("Введите пароль")
 	url := promptData("Введите URL")
@@ -76,7 +77,7 @@ func promptData(prompt string) string {
 }
 
 // 2 -> Найти аккаунт
-func findAccount(vault *account.Vault) {
+func findAccount(vault *account.VaultWithDb) {
 	url := promptData("Введите URL для поиска")
 	accounts := vault.FindAccountsByUrl(url)
 	if len(accounts) == 0 {
@@ -88,7 +89,7 @@ func findAccount(vault *account.Vault) {
 }
 
 // 3 -> Удалить аккаунт
-func deleteAccount(vault *account.Vault) {
+func deleteAccount(vault *account.VaultWithDb) {
 	url := promptData("Введите URL для удаления")
 	isDeleted := vault.DeleteAccountByUrl(url)
 	if isDeleted {
