@@ -3,17 +3,20 @@ package main
 import (
 	"Golang/password/account"
 	"Golang/password/files"
+	"Golang/password/output"
 	"fmt"
 
 	"github.com/fatih/color"
 )
 
 func main() {
+
 	//1. Создать аккаунт
 	//2. Найти аккаунт
 	//3. Удалить аккаунт
 	//4. Выход
 	vault := account.NewVault(files.NewJsonDb("data.json"))
+	// vault := account.NewVault(cloud.NewCloudDb("https://aaaa.ru"))
 
 	fmt.Println("Программа для хранения паролей")
 Menu: // label -> какой-то лейбл (часть кода)
@@ -63,7 +66,7 @@ func createAccount(vault *account.VaultWithDb) {
 	url := promptData("Введите URL")
 	myAccount, err := account.NewAccount(login, password, url)
 	if err != nil {
-		fmt.Println(err)
+		output.PrintError("Неверный формат")
 		return
 	}
 	vault.AddAccount(*myAccount)
@@ -95,8 +98,8 @@ func deleteAccount(vault *account.VaultWithDb) {
 	if isDeleted {
 		color.Green("Аккаунт удален")
 		return
-	} else{
-		color.Red("Не найдено")
+	} else {
+		output.PrintError("Не найдено")
 	}
 }
 func menuForAccount() {

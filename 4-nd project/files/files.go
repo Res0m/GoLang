@@ -1,6 +1,7 @@
 package files
 
 import (
+	"Golang/password/output"
 	"fmt"
 	"os"
 )
@@ -27,12 +28,12 @@ func (db *JsonDb) Read() ([]byte, error) {
 func (db *JsonDb)Write(content []byte) {
 	file, err := os.Create(db.filename)
 	if err != nil {
-		panic(err)
+		output.PrintError(err)
 	}
 	_, err = file.Write(content)
 	defer file.Close()
 	if err != nil {
-		panic(err)
+		output.PrintError(err)
 	}
 	fmt.Println("Запись успешна")
 }
