@@ -2,8 +2,8 @@ package files
 
 import (
 	"Golang/password/output"
-	"fmt"
 	"os"
+	"github.com/fatih/color"
 )
 
 type JsonDb struct {
@@ -25,7 +25,7 @@ func (db *JsonDb) Read() ([]byte, error) {
 
 }
 
-func (db *JsonDb)Write(content []byte) {
+func (db *JsonDb) Write(content []byte) {
 	file, err := os.Create(db.filename)
 	if err != nil {
 		output.PrintError(err)
@@ -35,5 +35,5 @@ func (db *JsonDb)Write(content []byte) {
 	if err != nil {
 		output.PrintError(err)
 	}
-	fmt.Println("Запись успешна")
+	color.Black("Запись успешна")
 }
