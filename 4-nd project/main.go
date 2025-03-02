@@ -9,6 +9,13 @@ import (
 	"github.com/fatih/color"
 )
 
+var menu = map[string]func(*account.VaultWithDb){
+	"1": createAccount,
+	"2": findAccount,
+	"3": deleteAccount,
+}
+
+
 func main() {
 
 	//1. Создать аккаунт
@@ -28,16 +35,21 @@ Menu: // label -> какой-то лейбл (часть кода)
 			"4. Выхода",
 			"Выберите выриант",
 		})
-		switch choice {
-		case "1":
-			createAccount(vault)
-		case "2":
-			findAccount(vault)
-		case "3":
-			deleteAccount(vault)
-		default:
+		menuFunc := menu[choice]
+		if menuFunc == nil {
 			break Menu
 		}
+		menuFunc(vault)
+		// switch choice {
+		// case "1":
+		// 	createAccount(vault)
+		// case "2":
+		// 	findAccount(vault)
+		// case "3":
+		// 	deleteAccount(vault)
+		// default:
+		// 	break Menu
+		// }
 	}
 	// -----------------------------------------------------------------------------------------
 	// str :=[]int32(rune)("Привет!)")
