@@ -5,6 +5,7 @@ import (
 	"Golang/password/files"
 	"Golang/password/output"
 	"fmt"
+	"strings"
 
 	"github.com/fatih/color"
 )
@@ -102,7 +103,9 @@ func promptData[T any](prompt []T) string {
 // 2 -> Найти аккаунт
 func findAccount(vault *account.VaultWithDb) {
 	url := promptData([]string{"Введите URL для поиска"})
-	accounts := vault.FindAccountsByUrl(url)
+	accounts := vault.FindAccounts(url, func(acc account.Account, str string) bool{ // анонимная функция
+		return strings.Contains(acc.Url, str)
+	})
 	if len(accounts) == 0 {
 		color.Red("Аккаунтов не найдено")
 	}
@@ -110,6 +113,11 @@ func findAccount(vault *account.VaultWithDb) {
 		account.Output()
 	}
 }
+
+
+// func checkUrl(acc account.Account, str string) bool {
+// 	return strings.Contains(acc.Url, str)
+// }
 
 // 3 -> Удалить аккаунт
 func deleteAccount(vault *account.VaultWithDb) {
