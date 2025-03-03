@@ -12,12 +12,32 @@ import (
 
 var menu = map[string]func(*account.VaultWithDb){
 	"1": createAccount,
-	"2": findAccount,
-	"3": deleteAccount,
+	"2": findAccountByUrl,
+	"3": findAccountByLogin,
+	"4": deleteAccount,
+}
+
+var menuVariants = []string{
+	"1. Создать аккаунт",
+	"2. Найти аккаунт по URL",
+	"3. Найти аккаунт по логину",
+	"4. Удалить аккаунт",
+	"5. Выхода",
+	"Выберите выриант",
+}
+
+func menuCounter()func(){
+	i := 0
+	return func() {
+		i += 1
+		fmt.Println(i)
+	}
 }
 
 
 func main() {
+	counter := menuCounter()
+	counter2 := menuCounter()
 
 	//1. Создать аккаунт
 	//2. Найти аккаунт
@@ -29,13 +49,9 @@ func main() {
 	fmt.Println("Программа для хранения паролей")
 Menu: // label -> какой-то лейбл (часть кода)
 	for {
-		choice := promptData([]string{
-			"1. Создать аккаунт",
-			"2. Найти аккаунт",
-			"3. Удалить аккаунт",
-			"4. Выхода",
-			"Выберите выриант",
-		})
+		counter() // Каждый раз когда мы будем вызывать будет прибавлять 1 к счетчику ( Замыкание?? )
+		counter2()
+		choice := promptData(menuVariants...)
 		menuFunc := menu[choice]
 		if menuFunc == nil {
 			break Menu
@@ -74,9 +90,9 @@ Menu: // label -> какой-то лейбл (часть кода)
 
 // 1 -> Создать аккаунт
 func createAccount(vault *account.VaultWithDb) {
-	login := promptData([]string{"Введите логин"})
-	password := promptData([]string{"Введите пароль"})
-	url := promptData([]string{"Введите URL"})
+	login := promptData("Введите логин")
+	password := promptData("Введите пароль")
+	url := promptData("Введите URL")
 	myAccount, err := account.NewAccount(login, password, url)
 	if err != nil {
 		output.PrintError("Неверный формат")
@@ -87,7 +103,7 @@ func createAccount(vault *account.VaultWithDb) {
 
 // Функция принимала слайс любого типа
 // Выводит строкой каждый элемент, а последний - выводит через Printf(), добавляя:
-func promptData[T any](prompt []T) string {
+func promptData(prompt ...string) string {
 	for i, line := range prompt {
 		if i == len(prompt)-1 {
 			fmt.Printf("%v: ", line)
@@ -101,10 +117,22 @@ func promptData[T any](prompt []T) string {
 }
 
 // 2 -> Найти аккаунт
-func findAccount(vault *account.VaultWithDb) {
-	url := promptData([]string{"Введите URL для поиска"})
-	accounts := vault.FindAccounts(url, func(acc account.Account, str string) bool{ // анонимная функция
-		return strings.Contains(acc.Url, str)
+func findAccountByUrl(vault *account.VaultWithDb) {
+	url := promptData("Введите URL для поиска: ")
+	accounts := vault.FindAccounts(url, func(acc account.Account, url string) bool{
+		return strings.Contains(acc.Url, url)
+	})
+	if len(accounts) == 0 {
+		color.Red("Аккаунтов не найдено")
+	}
+	for _, account := range accounts {
+		account.Output()
+	}
+}
+func findAccountByLogin(vault *account.VaultWithDb) {
+	url := promptData("Введите Логин для поиска: ")
+	accounts := vault.FindAccounts(url, func(acc account.Account, login string) bool{
+		return strings.Contains(acc.Login, login)
 	})
 	if len(accounts) == 0 {
 		color.Red("Аккаунтов не найдено")
@@ -119,9 +147,13 @@ func findAccount(vault *account.VaultWithDb) {
 // 	return strings.Contains(acc.Url, str)
 // }
 
+// func checkLog(acc account.Account, str string) bool {
+// 	return strings.Contains(acc.Login, str)
+// }
+
 // 3 -> Удалить аккаунт
 func deleteAccount(vault *account.VaultWithDb) {
-	url := promptData([]string{"Введите URL для удаления"})
+	url := promptData("Введите URL для удаления")
 	isDeleted := vault.DeleteAccountByUrl(url)
 	if isDeleted {
 		color.Green("Аккаунт удален")
