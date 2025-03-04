@@ -5,6 +5,7 @@ import (
 	"Golang/password/files"
 	"Golang/password/output"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/fatih/color"
@@ -26,7 +27,7 @@ var menuVariants = []string{
 	"Выберите выриант",
 }
 
-func menuCounter()func(){
+func menuCounter() func() {
 	i := 0
 	return func() {
 		i += 1
@@ -34,10 +35,15 @@ func menuCounter()func(){
 	}
 }
 
-
 func main() {
 	counter := menuCounter()
 	counter2 := menuCounter()
+	
+
+	for _, e := range os.Environ(){
+		pair := strings.SplitN(e, "=", 2)
+		fmt.Println(pair)
+	}
 
 	//1. Создать аккаунт
 	//2. Найти аккаунт
@@ -119,7 +125,7 @@ func promptData(prompt ...string) string {
 // 2 -> Найти аккаунт
 func findAccountByUrl(vault *account.VaultWithDb) {
 	url := promptData("Введите URL для поиска: ")
-	accounts := vault.FindAccounts(url, func(acc account.Account, url string) bool{
+	accounts := vault.FindAccounts(url, func(acc account.Account, url string) bool {
 		return strings.Contains(acc.Url, url)
 	})
 	if len(accounts) == 0 {
@@ -131,7 +137,7 @@ func findAccountByUrl(vault *account.VaultWithDb) {
 }
 func findAccountByLogin(vault *account.VaultWithDb) {
 	url := promptData("Введите Логин для поиска: ")
-	accounts := vault.FindAccounts(url, func(acc account.Account, login string) bool{
+	accounts := vault.FindAccounts(url, func(acc account.Account, login string) bool {
 		return strings.Contains(acc.Login, login)
 	})
 	if len(accounts) == 0 {
@@ -141,7 +147,6 @@ func findAccountByLogin(vault *account.VaultWithDb) {
 		account.Output()
 	}
 }
-
 
 // func checkUrl(acc account.Account, str string) bool {
 // 	return strings.Contains(acc.Url, str)
