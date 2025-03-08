@@ -2,13 +2,14 @@ package main
 
 import (
 	"Golang/password/account"
+	"Golang/password/encrypter"
 	"Golang/password/files"
 	"Golang/password/output"
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/fatih/color"
+	"github.com/joho/godotenv"
 )
 
 var menu = map[string]func(*account.VaultWithDb){
@@ -36,27 +37,16 @@ func menuCounter() func() {
 }
 
 func main() {
-	counter := menuCounter()
-	counter2 := menuCounter()
-	
-
-	for _, e := range os.Environ(){
-		pair := strings.SplitN(e, "=", 2)
-		fmt.Println(pair)
+	err := godotenv.Load()
+	if err != nil {
+		output.PrintError("Не удалось найти env файл")
 	}
-
-	//1. Создать аккаунт
-	//2. Найти аккаунт
-	//3. Удалить аккаунт
-	//4. Выход
-	vault := account.NewVault(files.NewJsonDb("data.json"))
+	vault := account.NewVault(files.NewJsonDb("data.json"), *encrypter.NewEncrypter())
 	// vault := account.NewVault(cloud.NewCloudDb("https://aaaa.ru"))
 
 	fmt.Println("Программа для хранения паролей")
 Menu: // label -> какой-то лейбл (часть кода)
 	for {
-		counter() // Каждый раз когда мы будем вызывать будет прибавлять 1 к счетчику ( Замыкание?? )
-		counter2()
 		choice := promptData(menuVariants...)
 		menuFunc := menu[choice]
 		if menuFunc == nil {
