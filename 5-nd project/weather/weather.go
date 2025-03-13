@@ -8,6 +8,12 @@ import (
 	"net/url"
 )
 
+
+// Unit
+// Integration
+// E2E -> end to end
+
+
 func GetWeather(geo geo.GeoData, format int) string {
 	baseUrl, err := url.Parse("https://wttr.in/" + geo.City)
 	if err != nil {
