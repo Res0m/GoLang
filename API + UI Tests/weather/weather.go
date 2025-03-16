@@ -35,3 +35,4 @@ func GetWeather(geo geo.GeoData, format int) string {
 	return string(body)
 
 }
+
